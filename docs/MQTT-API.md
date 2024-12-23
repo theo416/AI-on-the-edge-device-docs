@@ -7,12 +7,14 @@ The device is capable to register to a MQTT broker to publish data and subscribe
 The MQTT service has to be enabled and configured properly in the device configuration via web interface (`Settings` -> `Configuration` -> section `MQTT`)
 
 The following parameters have to be defined:
-* URI
-* MainTopic (optional, if not set, the hostname is used)
-* ClientID (optional, if not set, `AIOTED-` + the MAC address gets used to make sure the ID is unique)
-* User (optional)
-* Password (optional)
-* RetainFlag (optional)
+- [URI](https://jomjol.github.io/AI-on-the-edge-device-docs/Parameters/#parameter-uri) (required)
+- [MainTopic](https://jomjol.github.io/AI-on-the-edge-device-docs/Parameters/#parameter-maintopic) (optional, if not set, the hostname is used)
+- [ClientID](https://jomjol.github.io/AI-on-the-edge-device-docs/Parameters/#parameter-clientid) (optional, if not set, `AIOTED-` + the MAC address gets used to make sure the ID is unique)
+- [User](https://jomjol.github.io/AI-on-the-edge-device-docs/Parameters/#parameter-user) (optional)
+- [Password](https://jomjol.github.io/AI-on-the-edge-device-docs/Parameters/#parameter-password) (optional)
+- [RetainMessages](https://jomjol.github.io/AI-on-the-edge-device-docs/Parameters/#parameter-retainmessages) (optional)
+
+If you want to use MQTT-TLS (encrypted), have a look at [this section](https://jomjol.github.io/AI-on-the-edge-device-docs/MQTT-API/#mqtt-tls).
 
 ## Published topics
 
@@ -85,3 +87,18 @@ __Payload:__
 
 #### GPIO/GPIO{PinNumber}
 Depending on device configuration (`Settings` --> `Configuration` --> section `GPIO`)
+
+## MQTT-TLS
+The device supports MQTT-TLS for an encrypted connection to the broker.
+### Configuration
+To use MQTT-TLS, you need to configure the following additional parameters (Expert-Parameters):
+- Change the `URI` to `mqtts://example.com:8883` (note the mqtt`s` and Port `8883`)
+- Select a `Root CA Certificate file` (details below)
+### CA-Certificate
+You need to specify a CA-Certificate. With this, the device can validate the server.
+#### Cloud-Hoster
+If you use public brokers, you need to download their Root CA-file.\
+For example HiveMQ, take a look at the [Technical FAQs](https://community.hivemq.com/t/frequently-asked-questions-hivemq-cloud/514).\
+Make sure to set the Parameter `ValidateServerCert` to `enabled (true)` to prevent MITM-Attacks!
+#### Self signed
+If you want to use your own [PKI-Infrastructur](https://en.wikipedia.org/wiki/Public_key_infrastructure), you can find an instruction on how to setup with openssl [here](https://mosquitto.org/man/mosquitto-tls-7.html).
